@@ -11,9 +11,10 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Build with Buildozer
+      - name: Build APK
         uses: ArtemSBulgakov/buildozer-action@v1
         with:
           command: buildozer android debug
@@ -21,5 +22,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: APK
+          name: abg-analyzer-apk
           path: bin/*.apk
