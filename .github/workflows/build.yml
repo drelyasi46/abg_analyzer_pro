@@ -23,35 +23,14 @@ jobs:
 
     - name: Build APK
       run: |
-        yes | buildozer android debugname: Build Android APK
+        yes |- name: Build APK
+  run: |
+    yes | buildozer android debug
+  env:
+    BUILDOZER_WARN_ON_ROOT: 0
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    container:
-      image: kivy/buildozer:latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Show versions
-        run: |
-          python --version
-          buildozer --version
-
-      - name: Build APK
-        run: |
-          buildozer android debug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: apk
-          path: bin/*.apk
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: abg-apk
+        path: bin/*.apk
