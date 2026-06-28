@@ -282,7 +282,7 @@ android.ndk = 27c
 # (bool) Android logcat only display log for activity's pid
 #android.logcat_pid_only = False
 
-requirements = python3,kivy,kivymd
+
 
 #android.adb_args = -H host.docker.internal
 
