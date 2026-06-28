@@ -7,7 +7,7 @@ from core.abg_engine import ABGEngine
 class ABGApp(MDApp):
 
     def build(self):
-        self.title = "ABG Analyzer Pro"
+      self.title = "ABG TEST 3962247"
 
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.primary_hue = "700"
