@@ -9,10 +9,10 @@
 title = ABG Analyzer Pro
 
 # (str) Package name
-package.name = myapp
+package.name = abganalyzerpro
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.test
+package.domain = babakelyasi.com
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -46,7 +46,7 @@ version = 0.1
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
-# requirements.source.kivy = ../../kivy
+requirements = python3,kivy==2.3.1,kivymd==1.2.0
 
 # (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png
@@ -112,7 +112,7 @@ fullscreen = 0
 android.api = 34
 
 # (int) Minimum API your APK / AAB will support.
-android.minapi = 21
+android.minapi = 23
 
 # (int) Android SDK version to use
 #android.sdk = 20
@@ -141,7 +141,7 @@ android.ndk = 27c
 # agreements. This is intended for automation only. If set to False,
 # the default, you will be shown the license when first running
 # buildozer.
-# android.accept_sdk_license = Falseb
+ android.accept_sdk_license = true
 # (str) Android entry point, default is ok for Kivy-based app
 #android.entrypoint = org.kivy.android.PythonActivity
 
@@ -291,7 +291,7 @@ requirements = python3,kivy,kivymd
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
 # In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
 # this is not the same as app version and should only be edited if you know what you're doing
