@@ -1,14 +1,81 @@
 MDScreen:
 
-    MDTopAppBar:
-        title: "ABG Analyzer Pro"
-        pos_hint: {"top": 1}
+    MDBoxLayout:
+        orientation: "vertical"
 
-    MDLabel:
-        text: "ABG Analyzer Pro"
-        halign: "center"
-        pos_hint: {"center_y": .7}
+        MDTopAppBar:
+            title: "ABG Analyzer Pro"
 
-    MDRaisedButton:
-        text: "Analyze"
-        pos_hint: {"center_x": .5, "center_y": .5}
+        ScrollView:
+
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                padding: "15dp"
+                spacing: "12dp"
+
+                MDLabel:
+                    text: "Patient Data"
+                    bold: True
+                    font_style: "H6"
+                    adaptive_height: True
+
+                MDTextField:
+                    id: ph
+                    hint_text: "pH"
+                    helper_text: "Example: 7.35"
+                    helper_text_mode: "on_focus"
+
+                MDTextField:
+                    id: pco2
+                    hint_text: "PCO₂ (mmHg)"
+                    input_filter: "float"
+
+                MDTextField:
+                    id: hco3
+                    hint_text: "HCO₃⁻ (mEq/L)"
+                    input_filter: "float"
+
+                MDTextField:
+                    id: na
+                    hint_text: "Na⁺ (mEq/L)"
+                    input_filter: "float"
+
+                MDTextField:
+                    id: k
+                    hint_text: "K⁺ (mEq/L)"
+                    input_filter: "float"
+
+                MDTextField:
+                    id: cl
+                    hint_text: "Cl⁻ (mEq/L)"
+                    input_filter: "float"
+
+                MDTextField:
+                    id: albumin
+                    hint_text: "Albumin (g/dL)"
+                    input_filter: "float"
+
+                MDTextField:
+                    id: lactate
+                    hint_text: "Lactate (mmol/L)"
+                    input_filter: "float"
+
+                MDRaisedButton:
+                    text: "ANALYZE"
+                    pos_hint: {"center_x": .5}
+                    on_release: app.analyze()
+
+                MDCard:
+                    orientation: "vertical"
+                    padding: "12dp"
+                    adaptive_height: True
+
+                    MDLabel:
+                        text: "Results"
+                        bold: True
+
+                    MDLabel:
+                        id: result
+                        text: "No analysis yet."
+                        adaptive_height: True
