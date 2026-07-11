@@ -2,82 +2,22 @@ MDScreen:
 
     MDBoxLayout:
         orientation: "vertical"
+        spacing: "12dp"
+        padding: "16dp"
 
-        MDTopAppBar:
-            title: "ABG Analyzer Pro"
+        HeaderCard:
 
         ScrollView:
+            do_scroll_x: False
 
             MDBoxLayout:
                 orientation: "vertical"
-                size_hint_y: None
-                height: self.minimum_height
-                spacing: "12dp"
-                padding: "16dp"
+                adaptive_height: True
+                spacing: "16dp"
+                padding: "8dp"
 
-                MDLabel:
-                    text: "Patient Data"
-                    adaptive_height: True
-                    bold: True
+                InputCard:
+                    id: input_card
 
-                MDTextField:
-                    id: ph
-                    hint_text: "pH"
-                    mode: "rectangle"
-
-                MDTextField:
-                    id: pco2
-                    hint_text: "PCO₂ (mmHg)"
-                    mode: "rectangle"
-
-                MDTextField:
-                    id: hco3
-                    hint_text: "HCO₃⁻ (mEq/L)"
-                    mode: "rectangle"
-
-                MDTextField:
-                    id: na
-                    hint_text: "Na⁺ (mEq/L)"
-                    mode: "rectangle"
-
-                MDTextField:
-                    id: k
-                    hint_text: "K⁺ (mEq/L)"
-                    mode: "rectangle"
-
-                MDTextField:
-                    id: cl
-                    hint_text: "Cl⁻ (mEq/L)"
-                    mode: "rectangle"
-
-                MDTextField:
-                    id: albumin
-                    hint_text: "Albumin (g/dL)"
-                    mode: "rectangle"
-
-                MDTextField:
-                    id: lactate
-                    hint_text: "Lactate (mmol/L)"
-                    mode: "rectangle"
-
-                MDRaisedButton:
-                    text: "ANALYZE"
-                    pos_hint: {"center_x": 0.5}
-                    on_release: app.analyze()
-
-                MDCard:
-                    size_hint_y: None
-                    height: self.minimum_height
-                    orientation: "vertical"
-                    padding: "12dp"
-
-                    MDLabel:
-                        text: "Results"
-                        adaptive_height: True
-                        bold: True
-
-                    MDLabel:
-                        id: result
-                        text: "No analysis yet."
-                        adaptive_height: True
-                        text_size: self.width, None
+                ResultCard:
+                    id: result_card

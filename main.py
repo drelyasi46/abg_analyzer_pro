@@ -3,11 +3,15 @@ from kivymd.app import MDApp
 
 from core.abg_engine import ABGEngine
 
+from widgets.header_card import HeaderCard
+from widgets.input_card import InputCard
+from widgets.result_card import ResultCard
+
 
 class ABGApp(MDApp):
 
     def build(self):
-      self.title = "ABG TEST 3962247"
+        self.title = "ABG Analyzer Pro"
 
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.primary_hue = "700"
@@ -15,37 +19,62 @@ class ABGApp(MDApp):
 
         self.engine = ABGEngine()
 
+        Builder.load_file("widgets/header_card.kv")
+        Builder.load_file("widgets/input_card.kv")
+        Builder.load_file("widgets/result_card.kv")
+
         return Builder.load_file("main.kv")
 
+
     def analyze(self):
+
+        print(">>> Analyze button pressed")
+
         try:
-            screen = self.root
 
-            ph = float(screen.ids.ph.text)
-            pco2 = float(screen.ids.pco2.text)
-            hco3 = float(screen.ids.hco3.text)
+            values = self.root.ids.input_card.get_values()
 
-            na = float(screen.ids.na.text) if screen.ids.na.text else None
-            k = float(screen.ids.k.text) if screen.ids.k.text else None
-            cl = float(screen.ids.cl.text) if screen.ids.cl.text else None
-            albumin = float(screen.ids.albumin.text) if screen.ids.albumin.text else None
-            lactate = float(screen.ids.lactate.text) if screen.ids.lactate.text else None
+            print("Input Values:")
+            print(values)
 
-            result = self.engine.analyze(
-                ph=ph,
-                pco2=pco2,
-                hco3=hco3,
-                na=na,
-                k=k,
-                cl=cl,
-                albumin=albumin,
-                lactate=lactate,
+
+            if (
+                values["ph"] is None or
+                values["pco2"] is None or
+                values["hco3"] is None
+            ):
+                self.root.ids.result_card.set_report(
+                    "Please enter pH, PaCO2 and HCO3."
+                )
+                return
+
+
+            report = self.engine.analyze(**values)
+
+            print("Engine Output:")
+            print(report)
+
+
+            self.root.ids.result_card.set_report(
+                report["report"]
             )
 
-            screen.ids.result.text = str(result)
+
+        except ValueError:
+
+            self.root.ids.result_card.set_report(
+                "Invalid numeric input."
+            )
+
 
         except Exception as e:
-            screen.ids.result.text = f"Error:\n{e}"
+
+            import traceback
+            traceback.print_exc()
+
+            self.root.ids.result_card.set_report(
+                f"Unexpected Error:\n\n{e}"
+            )
 
 
 if __name__ == "__main__":
