@@ -8,11 +8,6 @@ on:
       - master
 
 jobs:
-- name: Clean build
-  run: |
-    rm -rf ~/.buildozer
-    rm -rf .buildozer
-    rm -rf bin
   build:
     runs-on: ubuntu-22.04
 
@@ -22,6 +17,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Clean build cache
+        run: |
+          rm -rf ~/.buildozer
+          rm -rf .buildozer
+          rm -rf bin
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -38,12 +39,24 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            git zip unzip openjdk-17-jdk \
-            autoconf libtool pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev \
-            cmake libffi-dev libssl-dev \
-            build-essential ccache \
-            libltdl-dev libsqlite3-dev sqlite3 \
+            git \
+            zip \
+            unzip \
+            openjdk-17-jdk \
+            autoconf \
+            libtool \
+            pkg-config \
+            zlib1g-dev \
+            libncurses5-dev \
+            libncursesw5-dev \
+            cmake \
+            libffi-dev \
+            libssl-dev \
+            build-essential \
+            ccache \
+            libltdl-dev \
+            libsqlite3-dev \
+            sqlite3 \
             python3-dev
 
       - name: Install Buildozer
