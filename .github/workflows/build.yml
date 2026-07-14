@@ -8,11 +8,16 @@ on:
       - master
 
 jobs:
+- name: Clean build
+  run: |
+    rm -rf ~/.buildozer
+    rm -rf .buildozer
+    rm -rf bin
   build:
     runs-on: ubuntu-22.04
 
     env:
-      BUILDOZER_WARN_ON_ROOT: 1
+      BUILDOZER_WARN_ON_ROOT: 0
 
     steps:
       - name: Checkout repository

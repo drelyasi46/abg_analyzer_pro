@@ -1,9 +1,10 @@
 [app]
 
 title = ABG Analyzer Pro
-p4a.branch = master
+p4a.commit = 5e2c4f4
 package.name = abganalyzer
 package.domain = drelyasibabak.ir
+p4a.branch = v2024.01.21
 
 source.dir = .
 source.include_exts = py,kv,png,jpg,jpeg,ttf,json
