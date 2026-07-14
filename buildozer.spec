@@ -1,7 +1,7 @@
 [app]
 
 title = ABG Analyzer Pro
-
+p4a.branch = 2024.01.21
 package.name = abganalyzer
 package.domain = drelyasibabak.ir
 
