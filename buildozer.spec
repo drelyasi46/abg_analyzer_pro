@@ -1,4 +1,5 @@
 [app]
+
 title = ABG Analyzer Pro
 
 package.name = abganalyzer
