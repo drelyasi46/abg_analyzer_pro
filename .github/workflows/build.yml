@@ -1,4 +1,4 @@
-name: Build ABG Analyzer Pro APK
+name: Build APK
 
 on:
   workflow_dispatch:
@@ -11,20 +11,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y \
-            python3-pip \
-            python3-venv \
             git \
             zip \
-            unzip
+            unzip \
+            openjdk-17-jdk
 
       - name: Install Buildozer
         run: |
-          pip install --user buildozer
-          pip install --user cython==0.29.36
+          python -m pip install --upgrade pip
+          pip install buildozer
+          pip install cython==3.0.11
 
       - name: Build APK
         env:
