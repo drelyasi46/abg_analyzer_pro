@@ -1,3 +1,5 @@
+from doctor.json_report import save_json_report
+from doctor.score import calculate
 from doctor.dedupe import remove_duplicates
 from doctor.utils import normalize_results
 from doctor.project import check_project
@@ -44,4 +46,10 @@ def run_all():
     results = remove_duplicates(results)
 
     results = normalize_results(results)
+    score = calculate(results)
+
+    save_json_report(
+    results,
+    score
+    )
     print_report(results)
