@@ -4,9 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-
   build:
-
     runs-on: ubuntu-22.04
 
     steps:
@@ -37,51 +35,59 @@ jobs:
           pip install buildozer
           pip install cython==3.0.11
 
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          fi
 
-
-      - name: Run ABG Doctor Preflight
+      - name: Run Buildozer
+        id: build
         continue-on-error: true
+        env:
+          BUILDOZER_WARN_ON_ROOT: 0
+        run: |
+          buildozer android debug 2>&1 | tee build.log
+
+
+      - name: Run ABG Doctor Diagnosis
+        if: steps.build.outcome == 'failure'
+        run: |
+          python preflight.py --analyze build.log
+
+
+      - name: Generate Success Report
+        if: steps.build.outcome == 'success'
         run: |
           python preflight.py
 
 
-      - name: Upload Doctor Report
+      - name: Add GitHub Summary
+        if: always()
+        run: |
+          if [ -f doctor_report.md ]; then
+            cat doctor_report.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ABG Doctor report not generated" >> $GITHUB_STEP_SUMMARY
+          fi
+
+
+      - name: Upload ABG Doctor Reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: abg-doctor-report
           path: |
+            build.log
             doctor_report.json
-
-- name: Build APK
-  id: build
-  continue-on-error: true
-  env:
-    BUILDOZER_WARN_ON_ROOT: 0
-  run: |
-    buildozer android debug 2>&1 | tee build.log
-
-
-- name: Analyze Build Failure
-  if: steps.build.outcome == 'failure'
-  run: |
-    python preflight.py --analyze build.log
-
-
-- name: Upload Doctor Diagnostics
-  if: always()
-  uses: actions/upload-artifact@v4
-  with:
-    name: abg-doctor-diagnostics
-    path: |
-      build.log
-      doctor_report.json
+            doctor_report.md
 
 
       - name: Upload APK
+        if: steps.build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: abg-analyzer-apk
           path: bin/*.apk
+
+
+      - name: Fail workflow if build failed
+        if: steps.build.outcome == 'failure'
+        run: |
+          echo "Build failed. ABG Doctor report generated."
+          exit 1
