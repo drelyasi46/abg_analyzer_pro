@@ -55,12 +55,29 @@ jobs:
           path: |
             doctor_report.json
 
+- name: Build APK
+  id: build
+  continue-on-error: true
+  env:
+    BUILDOZER_WARN_ON_ROOT: 0
+  run: |
+    buildozer android debug 2>&1 | tee build.log
 
-      - name: Build APK
-        env:
-          BUILDOZER_WARN_ON_ROOT: 0
-        run: |
-          buildozer android debug
+
+- name: Analyze Build Failure
+  if: steps.build.outcome == 'failure'
+  run: |
+    python preflight.py --analyze build.log
+
+
+- name: Upload Doctor Diagnostics
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: abg-doctor-diagnostics
+    path: |
+      build.log
+      doctor_report.json
 
 
       - name: Upload APK
