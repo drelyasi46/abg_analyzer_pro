@@ -1,11 +1,11 @@
 import os
 
+from doctor.utils import ok, warning, error
+
 
 def check_project():
 
-    print("\n[PROJECT STRUCTURE]")
-
-    warnings = []
+    results = []
 
     folders = [
         ".buildozer",
@@ -17,18 +17,16 @@ def check_project():
         "venv_win"
     ]
 
-    for f in folders:
-        if os.path.exists(f):
-            warnings.append(f)
+    for folder in folders:
 
-    if warnings:
-        print("Found:")
-        for w in warnings:
-            print("  WARNING:", w)
-    else:
-        print("Clean")
+        if os.path.exists(folder):
 
-    print("\nChecking required files...")
+            results.append(
+                warning(
+                    f"{folder} found"
+                )
+            )
+
 
     required = [
         "main.py",
@@ -37,8 +35,23 @@ def check_project():
         "requirements.txt"
     ]
 
-    for r in required:
-        print(
-            "OK  " if os.path.exists(r) else "MISS ",
-            r
-        )
+    for file in required:
+
+        if os.path.exists(file):
+
+            results.append(
+                ok(
+                    f"{file} found"
+                )
+            )
+
+        else:
+
+            results.append(
+                error(
+                    f"{file} missing"
+                )
+            )
+
+
+    return results

@@ -1,20 +1,40 @@
 import os
 
+from doctor.utils import ok, warning, error
+
 
 def check_github():
 
-    print("\n[GITHUB ACTIONS]")
+    results = []
 
     workflow = ".github/workflows/build.yml"
 
     if not os.path.exists(workflow):
-        print("ERROR workflow missing")
-        return
 
-    print("OK workflow found")
+        results.append(
+            error(
+                "GitHub workflow missing"
+            )
+        )
 
-    with open(workflow, "r", encoding="utf-8") as f:
+        return results
+
+
+    results.append(
+        ok(
+            "workflow found"
+        )
+    )
+
+
+    with open(
+        workflow,
+        "r",
+        encoding="utf-8"
+    ) as f:
+
         content = f.read()
+
 
     checks = {
         "checkout": "actions/checkout" in content,
@@ -23,8 +43,37 @@ def check_github():
         "python": "python" in content,
     }
 
-    for name, result in checks.items():
-        if result:
-            print("OK", name)
+
+    for name, exists in checks.items():
+
+        if exists:
+
+            results.append(
+                ok(
+                    f"{name} configured"
+                )
+            )
+
         else:
-            print("WARNING missing", name)
+
+            results.append(
+                warning(
+                    f"{name} missing"
+                )
+            )
+
+
+    # Python version pin check
+    if (
+        "python-version" not in content
+        and "python_version" not in content
+    ):
+
+        results.append(
+            warning(
+                "Python version not pinned"
+            )
+        )
+
+
+    return results

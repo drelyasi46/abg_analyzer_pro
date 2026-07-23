@@ -2,19 +2,29 @@ import os
 import platform
 import subprocess
 
+from doctor.utils import ok, warning, error
+
 
 def check_android():
 
-    print("\n[ANDROID / BUILDOZER]")
+    results = []
 
     # OS check
     system = platform.system()
 
     if system == "Windows":
-        print("WARNING Running on Windows")
-        print("Buildozer should run in WSL/Linux/GitHub Actions")
+        results.append(
+            warning(
+                "Running on Windows - use WSL/Linux/GitHub Actions for Buildozer"
+            )
+        )
     else:
-        print("OK Linux environment")
+        results.append(
+            ok(
+                "Linux environment detected"
+            )
+        )
+
 
     # Buildozer check
     try:
@@ -25,25 +35,62 @@ def check_android():
         )
 
         if result.returncode == 0:
-            print("OK Buildozer:")
-            print(result.stdout.strip())
+            results.append(
+                ok(
+                    "Buildozer installed: "
+                    + result.stdout.strip()
+                )
+            )
         else:
-            print("WARNING Buildozer problem")
+            results.append(
+                warning(
+                    "Buildozer returned error"
+                )
+            )
 
     except FileNotFoundError:
-        print("WARNING Buildozer not installed")
 
-    # Python-for-android
-    if os.path.exists("python-for-android-master"):
-        print(
-            "WARNING python-for-android-master found "
-            "(possible conflict)"
+        results.append(
+            warning(
+                "Buildozer not installed"
+            )
         )
+
+
+    # python-for-android
+    if os.path.exists("python-for-android-master"):
+
+        results.append(
+            warning(
+                "python-for-android-master found (possible conflict)"
+            )
+        )
+
     else:
-        print("OK No external python-for-android")
+
+        results.append(
+            ok(
+                "No external python-for-android found"
+            )
+        )
+
 
     # buildozer.spec
     if os.path.exists("buildozer.spec"):
-        print("OK buildozer.spec found")
+
+        results.append(
+            ok(
+                "buildozer.spec found"
+            )
+        )
+
     else:
-        print("ERROR buildozer.spec missing")
+
+        results.append(
+            error(
+                "buildozer.spec missing"
+            )
+        )
+
+
+    return results

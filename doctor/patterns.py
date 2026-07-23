@@ -1,39 +1,45 @@
 FAILURE_PATTERNS = [
 
     {
-        "name": "Python 3.14 detected",
-        "pattern": r"python3\.14|Python 3\.14",
-        "advice": "Use Python 3.11 in GitHub Actions"
+        "title": "Python 3.14 detected",
+        "keyword": "Python 3.14",
+        "advice": "Use Python 3.11 in GitHub Actions",
+        "confidence": 95
     },
 
     {
-        "name": "Cython config.pxi problem",
-        "pattern": r"config\.pxi|Dependency for .*\.pyx not resolved",
-        "advice": "Check Kivy/Cython compatibility"
+        "title": "Cython config.pxi problem",
+        "keyword": "config.pxi",
+        "advice": "Check Kivy/Cython compatibility",
+        "confidence": 90
     },
 
     {
-        "name": "Buildozer root execution",
-        "pattern": r"running as root|BUILDOZER_WARN_ON_ROOT",
-        "advice": "Run Buildozer with normal user"
+        "title": "Buildozer root execution",
+        "keyword": "BUILDOZER_WARN_ON_ROOT",
+        "advice": "Run Buildozer with normal user",
+        "confidence": 85
     },
 
     {
-        "name": "Android NDK/SDK problem",
-        "pattern": r"NDK|sdkmanager|Android SDK",
-        "advice": "Check Android SDK and NDK setup"
+        "title": "Android NDK/SDK problem",
+        "keyword": "NDK",
+        "advice": "Check Android SDK and NDK setup",
+        "confidence": 85
     },
 
     {
-        "name": "Network download failure",
-        "pattern": r"TLS handshake|timeout|Unable to establish SSL",
-        "advice": "Check network or download source"
+        "title": "Network download failure",
+        "keyword": "TLS handshake",
+        "advice": "Check network or download source",
+        "confidence": 90
     },
 
     {
-        "name": "APK not generated",
-        "pattern": r"No files were found.*apk|bin/.*apk",
-        "advice": "Build failed before APK generation"
+        "title": "APK not generated",
+        "keyword": "apk",
+        "advice": "Build failed before APK generation",
+        "confidence": 75
     },
 
 ]

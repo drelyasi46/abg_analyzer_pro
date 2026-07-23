@@ -1,22 +1,38 @@
 import re
+
 from doctor.patterns import FAILURE_PATTERNS
 
 
 def analyze_log(text):
 
-    print("\n[BUILD FAILURE ANALYSIS]")
-
-    found = False
+    results = []
 
     for item in FAILURE_PATTERNS:
 
-        if re.search(item["pattern"], text, re.IGNORECASE):
+        if re.search(
+            item["keyword"],
+            text,
+            re.IGNORECASE
+        ):
 
-            found = True
+            results.append(
+                {
+                    "status": "ERROR",
+                    "message": item["title"],
+                    "advice": item["advice"],
+                    "confidence": item["confidence"]
+                }
+            )
 
-            print("ERROR:", item["name"])
-            print("Advice:", item["advice"])
-            print()
 
-    if not found:
-        print("No known failure pattern detected")
+    if not results:
+
+        results.append(
+            {
+                "status": "OK",
+                "message": "No known failure pattern detected"
+            }
+        )
+
+
+    return results
