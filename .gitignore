@@ -26,3 +26,16 @@ android/
 .DS_Store
 Thumbs.db
 python-for-android-master/
+
+# Buildozer
+.buildozer/
+bin/
+
+# Python environments
+.venv/
+venv/
+venv_buildozer/
+venv_win/
+
+# python-for-android
+python-for-android-master/
