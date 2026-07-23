@@ -4,19 +4,24 @@ on:
   workflow_dispatch:
 
 jobs:
+
   build:
+
     runs-on: ubuntu-22.04
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
+
 
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+
+      - name: Install system dependencies
         run: |
           sudo apt update
           sudo apt install -y \
@@ -25,17 +30,38 @@ jobs:
             unzip \
             openjdk-17-jdk
 
-      - name: Install Buildozer
+
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install buildozer
           pip install cython==3.0.11
+
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+
+      - name: Run ABG Doctor Preflight
+        continue-on-error: true
+        run: |
+          python preflight.py
+
+
+      - name: Upload Doctor Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: abg-doctor-report
+          path: |
+            doctor_report.json
+
 
       - name: Build APK
         env:
           BUILDOZER_WARN_ON_ROOT: 0
         run: |
           buildozer android debug
+
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
